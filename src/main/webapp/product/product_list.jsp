@@ -1,44 +1,44 @@
-<%@ page import="java.util.Calendar" %>
+<%@ page import="com.opentime.jsp_market_2506.DTO.Product" %>
+<%@ page import="com.opentime.jsp_market_2506.DAO.ProductRepository" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.text.DecimalFormat" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>welcome</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <title>상품 목록</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
 </head>
 <body>
 <%@ include file="../inc/menu.jsp"%>
-    <%!
-        String greeting = "Welcome to Web Shopping Mall";
-        String tagline = "Welcome to Web Market!";
-    %>
+
 <div class="jumbotron">
     <div class="container">
         <h1 class="display-3">
-            <%=greeting%>
+            상품 목록
         </h1>
     </div>
 </div>
 <div class="container">
-    <div class="text-center">
-        <h3>
-            <%=tagline%>
-        </h3>
+    <div class="row text-center">
         <%
-            Calendar calendar = Calendar.getInstance();
-            int hour = calendar.get(Calendar.HOUR);
-            int minute = calendar.get(Calendar.MINUTE);
-            int second = calendar.get(Calendar.SECOND);
-
-            String am_pm = calendar.get(Calendar.AM_PM) == Calendar.AM ? "AM" : "PM";
-
-            if(hour == 0){
-                hour = 12;
+            ProductRepository productRepository = ProductRepository.getInstance();
+            DecimalFormat df = new DecimalFormat("#,##0"); // #,##0원 형식으로 표시
+            List<Product> products = productRepository.getProducts();
+            for(Product product : products){
+                %>
+            <div class="col-md-4">
+                <h3><%=product.getProductName()%></h3>
+                <p><%=product.getDescription()%></p>
+                <p><%=df.format(product.getUnitPrice())%>원</p>
+                <p>
+                    <a href="./product.jsp?productId=<%=product.getProductId()%>"
+                       class="btn btn-secondary" role="button">상세정보 >></a>
+                </p>
+            </div>
+        <%
             }
-
-            String currentTime = String.format("%02d:%02d:%02d %s",hour,minute,second,am_pm);
-            out.println("현재 접속 시각: " + currentTime + '\n');
         %>
     </div>
     <hr>
