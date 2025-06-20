@@ -1,5 +1,7 @@
 <%@ page import="java.util.Date" %>
 <%@ page import="java.util.Calendar" %>
+<%@ page import="com.opentime.jsp_market_2506.DAO.MemberRepository" %>
+<%@ page import="com.opentime.jsp_market_2506.DTO.Member" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -10,10 +12,10 @@
 </head>
 <body>
 <%
-    if (Boolean.TRUE.equals(session.getAttribute("isAuth"))) {
+    if (!(boolean) session.getAttribute("isAuth")) {
 %>
 <script>
-    alert("이미 로그인되어 있습니다!");
+    alert("로그인 후 이용해주세요!");
     history.back();
 </script>
 <%
@@ -21,11 +23,10 @@
     }
 %>
 <%@ include file="../inc/menu.jsp" %>
-
 <div class="jumbotron">
     <div class="container">
         <h1 class="display-3">
-            회원 가입
+            회원 정보 수정
         </h1>
     </div>
 </div>
@@ -133,10 +134,9 @@
     <hr>
 </div>
 <script>
+    const frm = document.querySelector('form[name="frmAddMember"]');
+    const submit = document.querySelector('input[type="submit"]');
     document.addEventListener("DOMContentLoaded", function () {
-        const frm = document.querySelector('form[name="frmAddMember"]');
-        const submit = document.querySelector('input[type="submit"]');
-
         submit.addEventListener('click', (e) => {
             e.preventDefault();
             if (frm.passwd.value !== frm.passwordConfirm.value) {
@@ -146,6 +146,13 @@
             frm.submit();
         });
     });
+
+    <%
+        MemberRepository memberRepository = MemberRepository.getInstance();
+        Member member = memberRepository.getMemberById((String)session.getAttribute("sessionMemberId"));
+    %>
+
+
 </script>
 
 <%@ include file="../inc/footer.jsp" %>

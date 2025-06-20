@@ -3,6 +3,9 @@ package com.opentime.jsp_market_2506.DTO;
 import lombok.*;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Product {
     private String productId; // 상품 아이디
     private String productName; // 상품명
@@ -12,9 +15,6 @@ public class Product {
     private String category; // 분류
     private int unitsInStock; // 재고수
     private String condition; // 신상품 or 중고 or 재생품
-
-    // 빈 생성자
-    public Product(){}
 
     // 상품(아이디, 이름, 가격) 생성자
     public Product(String productId, String productName, Integer unitPrice){

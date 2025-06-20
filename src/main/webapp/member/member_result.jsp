@@ -14,7 +14,7 @@
 <div class="jumbotron">
   <div class="container">
     <h1 class="display-3">
-      회원 정보
+      🔔알림
     </h1>
   </div>
 </div>
@@ -29,7 +29,7 @@
         out.println(" <h2 class='alert alert-danger'>회원가입을 축하드립니다.</h2>");
       else if (msg.equals("2")) {
         String loginName = (String) session.getAttribute("sessionName");
-        out.println(" <h2 class='alert alert-danger'>" + loginName + "님 환영합니다</h2>");
+        out.println(" <h2 class='alert alert-danger'>" + loginName + "님 환영합니다 🤗 </h2>");
       }
     } else {
       out.println("<h2 class='alert alert-danger'>회원정보가 삭제되었습니다.</h2>");

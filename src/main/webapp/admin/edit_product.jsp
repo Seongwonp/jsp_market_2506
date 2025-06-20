@@ -9,7 +9,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>상품 목록</title>
+    <title>상품 편집</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
 </head>
 <body>
@@ -18,7 +18,7 @@
 <div class="jumbotron">
     <div class="container">
         <h1 class="display-3">
-            상품 목록
+            상품 편집
         </h1>
     </div>
 </div>
@@ -62,8 +62,10 @@
                 <p><%=product.getDescription()%></p>
                 <p><%=df.format(product.getUnitPrice())%>원</p>
                 <p>
-                    <a href="./product.jsp?productId=<%=product.getProductId()%>"
-                       class="btn btn-secondary" role="button">상세정보 >></a>
+                    <a href="modify_product.jsp?productId=<%=product.getProductId()%>"
+                       class="btn btn-secondary" role="button">수정 >></a>
+                    <a href="./delete_product.jsp?productId=<%=product.getProductId()%>"
+                       class="btn btn-danger" role="button">삭제</a>
                 </p>
             </div>
         <%

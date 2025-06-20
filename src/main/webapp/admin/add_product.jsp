@@ -48,10 +48,11 @@
                     <label for="category" class="col-sm-2">분류</label>
                     <div class="col-sm-5">
                         <select name="category" id="category">
-                            <option value="op1">op1</option>
-                            <option value="op2">op2</option>
-                            <option value="op3">op3</option>
-                            <option value="op4">op4</option>
+                            <option value="Smart Phone">스마트폰</option>
+                            <option value="Notebook">노트북</option>
+                            <option value="Tablet">태블릿</option>
+                            <option value="Accessory">액세서리</option>
+                            <option value="Etc">기타</option>
                         </select>
                     </div>
                 </div>
@@ -64,9 +65,9 @@
                 <div class="form-group row">
                     <label for="condition" class="col-sm-2">제품 상태</label>
                     <div class="col-sm-5">
-                        <input type="radio" name="condition" value="신상품" checked> 신상품
-                        <input type="radio" name="condition" value="중고"> 중고
-                        <input type="radio" name="condition" value="재생품"> 재생품
+                        <input type="radio" name="condition" value="New" checked> 신상품
+                        <input type="radio" name="condition" value="Old"> 중고
+                        <input type="radio" name="condition" value="Refurbished"> 재생품
                     </div>
                 </div>
                 <div class="form-group row">

@@ -15,11 +15,21 @@ public class MemberRepository {
     private static MemberRepository instance = new MemberRepository();
 
     public static MemberRepository getInstance() {
+        if (instance.members.isEmpty()) {
+            instance.members.add(Member.builder()
+                    .memberId("test")
+                    .passwd("1111")
+                    .memberName("테스트 사용자")
+                    .build());
+            instance.members.add(Member.builder()
+                    .memberId("admin")
+                    .passwd("1234")
+                    .memberName("운영자")
+                    .build());
+        }
         return instance;
     }
 
-
-    // 상품 아이디를 받아서 같은 상품 아이디를 가진 Product 객체를 반환. -> 없을 경우에는 null 반환
     public Member getMemberById(String memberId) {
 
         for (Member member : members) {
