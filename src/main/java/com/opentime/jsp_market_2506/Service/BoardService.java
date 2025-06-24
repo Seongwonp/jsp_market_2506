@@ -4,7 +4,6 @@ import com.opentime.jsp_market_2506.DTO.Board;
 import com.opentime.jsp_market_2506.DTO.PageRequestDTO;
 import com.opentime.jsp_market_2506.DTO.PageResponseDTO;
 import com.opentime.jsp_market_2506.Model.BoardDAO;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.List;
@@ -47,4 +46,27 @@ public class BoardService {
                 .totalPages(totalPage)
                 .build();
     }
+
+    public void addBoard(Board board) {
+        log.info("add board");
+        borderDAO.insertBoard(board); // 게시글 추가
+    }
+
+    public Board getBoardById(int bno) {
+        log.info("get board by id");
+        if(borderDAO.getBoardById(bno) != null) borderDAO.updateHit(bno);
+        return borderDAO.getBoardById(bno);
+    }
+
+    public boolean deleteBoard(int bno) {
+        log.info("delete board");
+        return borderDAO.deleteBoard(bno);
+    }
+
+    public boolean updateBoard(int bno, String content, String subject) {
+        log.info("update board");
+        return borderDAO.updateBoard(bno, content, subject);
+
+    }
+
 }

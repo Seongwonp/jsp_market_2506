@@ -97,7 +97,7 @@
                 <td>&nbsp</td>
                 <td>&nbsp</td>
                 <td class="text-right">    <strong>총액:&nbsp</strong></td>
-                <td class="text-center text-danger"><strong><%=String.format("%,d",sum)원%> </strong></td>
+                <td class="text-center text-danger"><strong><%=String.format("%,d",sum)%>원 </strong></td>
             </tr>
         </table>
 

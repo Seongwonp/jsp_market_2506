@@ -34,4 +34,19 @@ class BoardDAOTest {
     void deleteBoard() {
         log.info(boardDAO.deleteBoard(1));
     }
+
+    @Test
+    void updateBoard() {
+        log.info(boardDAO.updateBoard(115,"집가고싶다"));
+    }
+
+    @Test
+    void updateHit(){
+        boardDAO.updateHit(116);
+    }
+
+    @Test
+    void selectBoard(){
+        log.info(boardDAO.getBoardById(21));
+    }
 }

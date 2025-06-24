@@ -3,6 +3,8 @@ package com.opentime.jsp_market_2506.Model;
 import com.opentime.jsp_market_2506.DTO.Board;
 import com.opentime.jsp_market_2506.database.DBConnection;
 import lombok.Cleanup;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,6 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Log4j2
 public class BoardDAO {
     private static BoardDAO instance;
 
@@ -50,8 +53,6 @@ public class BoardDAO {
         // limit : 페이지당 게시글 수
         // items : 검색 항목
         // text : 검색어
-
-
         if(items == null || items.isEmpty() || text == null || text.isEmpty()){
             SQL = "SELECT * FROM board ORDER BY bno DESC LIMIT ? OFFSET ?";
         } else{
@@ -120,17 +121,57 @@ public class BoardDAO {
         }
     }
 
-    public boolean updateBoard(int bno, String content) {
-        String SQL = "UPDATE board SET content = ? WHERE bno = ?";
+    public boolean updateBoard(int bno, String content, String subject) {
+        String SQL = "UPDATE board SET subject = ? , content = ? WHERE bno = ?";
         try {
             @Cleanup Connection connection = DBConnection.getConnection();
             @Cleanup PreparedStatement preparedStatement = connection.prepareStatement(SQL);
-            preparedStatement.setString(1, content);
-            preparedStatement.setInt(2, bno);
+            preparedStatement.setString(1, subject);
+            preparedStatement.setString(2, content);
+            preparedStatement.setInt(3, bno);
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void updateHit(int bno){
+        log.info("updateHit {}",bno);
+        String SQL = "UPDATE board SET hit = hit + 1 WHERE bno = ?";
+        try{
+            @Cleanup Connection connection = DBConnection.getConnection();
+            @Cleanup PreparedStatement preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setInt(1, bno);
+            preparedStatement.executeUpdate();
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Board getBoardById(int bno) {
+        log.info("getBoardById {}", bno);
+        String SQL = "SELECT bno, memberId, name, subject, content, hit, addDate FROM board WHERE bno = ?";
+        Board board = null;
+        try{
+            @Cleanup Connection connection = DBConnection.getConnection();
+            @Cleanup PreparedStatement preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setInt(1, bno);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()) {
+                board = Board.builder()
+                        .bno(resultSet.getInt("bno"))
+                        .memberId(resultSet.getString("memberId"))
+                        .name(resultSet.getString("name"))
+                        .subject(resultSet.getString("subject"))
+                        .content(resultSet.getString("content"))
+                        .hit(resultSet.getInt("hit"))
+                        .dateTime(resultSet.getString("addDate"))
+                        .build();
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return board;
     }
 
 

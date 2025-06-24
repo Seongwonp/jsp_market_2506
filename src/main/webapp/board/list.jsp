@@ -1,6 +1,5 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.opentime.jsp_market_2506.DTO.Board" %>
-<%@ page import="java.util.ArrayList" %>
 <%@ page import="com.opentime.jsp_market_2506.DTO.PageResponseDTO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
@@ -15,7 +14,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>게시판</title>
+    <title>게시판 목록</title>
     <link rel="stylesheet" href="../css/bootstrap.min.css">
 </head>
 <body>
@@ -23,7 +22,7 @@
 <div class="jumbotron">
     <div class="container">
         <h1 class="display-3">
-            게시판
+            게시판 목록
         </h1>
     </div>
 </div>
@@ -46,7 +45,8 @@
                 <tr>
                     <td><%=board.getBno()%>
                     </td>
-                    <td><%=board.getSubject()%>
+                    <td><a href="./boardView.do?bno=<%=board.getBno()%>&pageNum=<%=pageNum%>"><%=board.getSubject()%>
+                    </a>
                     </td>
                     <td><%=board.getDateTime()%>
                     </td>
@@ -72,6 +72,9 @@
                                 <input name="text" type="text"/>
                                 <input type="submit" id="btnAdd" class="btn btn-primary" value="검색">
                                 <a href="./boardList.do" class="btn btn-danger">취소</a>
+                            </td>
+                            <td>
+                                <a href="./boardAddForm.do" class="btn btn-primary">글쓰기</a>
                             </td>
                         </tr>
                     </table>
