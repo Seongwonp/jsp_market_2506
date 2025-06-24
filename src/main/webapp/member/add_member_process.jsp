@@ -1,5 +1,5 @@
 <%@ page import="com.opentime.jsp_market_2506.DTO.Member" %>
-<%@ page import="com.opentime.jsp_market_2506.DAO.MemberRepository" %>
+<%@ page import="java.sql.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     if (Boolean.TRUE.equals(session.getAttribute("isAuth"))) {
@@ -16,9 +16,7 @@
     Member getMemberFromRequest(HttpServletRequest request){
         // 1. 폼태그를 가져와서 변수로 저장
         String memberId = request.getParameter("memberId"); // 아이디
-        if(memberId.equals(MemberRepository.getInstance().getMemberById(memberId).getMemberId())){
-            return null;
-        }
+
         String passwd = request.getParameter("passwd"); // 비번
         String memberName = request.getParameter("memberName"); // 이름
         String gender = request.getParameter("gender"); // 성별
@@ -39,16 +37,34 @@
                 .build();
     }
 %>
-
+<%@include file="../inc/dbconn.jsp"%>
 <%
-    // 2. 저장소에 저장
-    MemberRepository memberRepository = MemberRepository.getInstance();
-    if(getMemberFromRequest(request) == null){
+    // 2. JDBC를 이용하여 DB에 저장
+    Member member = getMemberFromRequest(request);
+    if (member == null) {
         return;
     }
-    memberRepository.addMember(getMemberFromRequest(request));
+
+    PreparedStatement pstmt = null;
+    try {
+        String sql = "INSERT INTO members (memberId, passwd, memberName, gender, birthday, email, phone, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        pstmt = connection.prepareStatement(sql);
+        pstmt.setString(1, member.getMemberId());
+        pstmt.setString(2, member.getPasswd());
+        pstmt.setString(3, member.getMemberName());
+        pstmt.setString(4, member.getGender());
+        pstmt.setString(5, member.getBirthday());
+        pstmt.setString(6, member.getEmail());
+        pstmt.setString(7, member.getPhone());
+        pstmt.setString(8, member.getAddress());
+        pstmt.executeUpdate();
+    } catch (Exception e) {
+        e.printStackTrace();
+        return;
+    } finally {
+        if (pstmt != null) try { pstmt.close(); } catch (SQLException e) {}
+    }
 
     // 3. 페이지 이동
     response.sendRedirect("../member/member_result.jsp?msg=1");
 %>
-

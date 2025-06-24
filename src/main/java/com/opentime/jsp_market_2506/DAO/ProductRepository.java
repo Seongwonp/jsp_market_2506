@@ -1,8 +1,13 @@
 package com.opentime.jsp_market_2506.DAO;
 
 import com.opentime.jsp_market_2506.DTO.Product;
+import com.opentime.jsp_market_2506.database.DBConnection;
 import lombok.Getter;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,8 +49,28 @@ public class ProductRepository {
 
     // 상품 아이디를 받아서 같은 상품 아이디를 가진 Product 객체를 반환. -> 없을 경우에는 null 반환
     public Product getProductById(String productId) {
-        for(Product product : products) {
-            if(product.getProductId().equals(productId)) return product;
+        String SQL = "SELECT * FROM product WHERE productId=?";
+        Product product = null;
+        try{
+            Connection connection = DBConnection.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setString(1, productId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                product = Product.builder()
+                        .productId(productId)
+                        .productName(resultSet.getString("productName"))
+                        .unitPrice(resultSet.getInt("unitPrice"))
+                        .manufacturer(resultSet.getString("manufacturer"))
+                        .description(resultSet.getString("description"))
+                        .category(resultSet.getString("category"))
+                        .unitsInStock(resultSet.getInt("unitsInStock"))
+                        .condition(resultSet.getString("condition"))
+                        .build();
+                return product;
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
         return null;
     }
